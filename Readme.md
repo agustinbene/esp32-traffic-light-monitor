@@ -3,6 +3,101 @@
 ## Descripción
 Sistema basado en ESP32 que detecta el estado de 4 semáforos mediante entradas digitales, registra timestamps cuando se enciende/apaga la luz roja de cada semáforo, y envía estos datos mediante peticiones POST HTTP.
 
+## Instalación y Compilación
+
+
+### Paso 1: Instalar Visual Studio Code
+1. Descarga VS Code desde [code.visualstudio.com](https://code.visualstudio.com/)
+2. Instala con configuraciones por defecto
+3. Abre VS Code
+
+### Paso 2: Instalar PlatformIO Extension
+1. En VS Code, haz clic en el ícono de **Extensions** (cuadrado con 4 cuadritos) en la barra lateral izquierda
+2. Busca "**PlatformIO IDE**"
+3. Haz clic en **Install** en la extensión oficial de PlatformIO
+4. **Reinicia VS Code** después de la instalación
+
+### Paso 3: Descargar el Código
+#### Opción A: Clonar desde GitHub (Recomendado)
+1. Abre la terminal en VS Code (`Ctrl + Shift + ` ` o `Terminal > New Terminal`)
+2. Navega a donde quieres guardar el proyecto:
+   ```bash
+   cd C:\Users\TuUsuario\Documents
+   ```
+3. Clona el repositorio:
+   ```bash
+   git clone https://github.com/agustinbene/esp32-traffic-light-monitor
+   ```
+4. Abre la carpeta del proyecto:
+   ```bash
+   cd esp32-traffic-light-monitor
+   code .
+   ```
+
+#### Opción B: Descargar ZIP
+1. Ve al repositorio en GitHub
+2. Haz clic en **Code** > **Download ZIP**
+3. Extrae el archivo ZIP
+4. En VS Code: **File** > **Open Folder** > Selecciona la carpeta extraída
+
+### Paso 4: Abrir el Proyecto en PlatformIO
+1. Una vez abierto el proyecto, VS Code debería detectar automáticamente que es un proyecto PlatformIO
+2. En la barra de tareas inferior, verás el ícono de PlatformIO (🏠)
+3. Si no aparece automáticamente, ve a **View** > **Command Palette** (`Ctrl + Shift + P`) y busca "PlatformIO: Home"
+
+### Paso 5: Conectar el ESP32
+1. Conecta tu ESP32 al puerto USB de tu computadora
+2. **Instalar drivers** (si es necesario):
+   - **ESP32 con chip CP2102**: [Descargar driver CP2102](https://www.silabs.com/developers/usb-to-uart-bridge-vcp-drivers)
+   - **ESP32 con chip CH340**: [Descargar driver CH340](http://www.wch-ic.com/downloads/CH341SER_ZIP.html)
+3. Reinicia la computadora después de instalar drivers
+
+### Paso 6: Verificar la Configuración
+Revisa que el archivo `platformio.ini` tenga la configuración correcta:
+
+```ini
+[env:esp32cam]
+platform = espressif32
+board = esp32cam
+framework = arduino
+lib_deps = 
+    adafruit/RTClib@^2.1.1
+    ethernet2@^1.0.4
+    ArduinoJson@^6.21.3
+monitor_speed = 115200
+upload_speed = 921600
+```
+
+### Paso 7: Compilar el Proyecto
+1. **Abrir PlatformIO Terminal**: En la barra inferior, haz clic en el ícono de terminal de PlatformIO
+2. **Compilar**: Ejecuta el comando:
+   ```bash
+   pio run
+   ```
+   O usa el atajo: `Ctrl + Alt + B`
+
+**Si todo está bien**, deberías ver algo como:
+```
+SUCCESS: Took X.XX seconds
+```
+
+### Paso 8: Subir el Código al ESP32
+1. **Verificar puerto**: En la barra inferior de VS Code, asegúrate de que esté seleccionado el puerto correcto (ej: COM3, COM4)
+2. **Subir código**:
+   ```bash
+   pio run --target upload
+   ```
+   O usa el atajo: `Ctrl + Alt + U`
+
+### Paso 9: Monitorear la Salida Serial
+Para ver los mensajes del ESP32:
+```bash
+pio device monitor
+```
+O usa el atajo: `Ctrl + Alt + S`
+
+Para salir del monitor serial, presiona `Ctrl + C`
+
 ## Características Principales
 - **Detección de 4 semáforos**: Monitoreo simultáneo de 4 luces rojas
 - **Registro preciso de tiempo**: Utiliza RTC DS1307 sincronizado con NTP
